@@ -1,6 +1,7 @@
 package org.job_listing.job_listing.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.job_listing.job_listing.dto.job;
@@ -31,5 +32,23 @@ public class jobService {
 
             return new ResponseEntity<Object>(map, HttpStatus.CREATED);
         }
+    }
+
+    public ResponseEntity<Object> postJobs(List<job> jobs) {
+        for(job job : jobs){
+            if(repository.existsById(job.getId())){
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("message", "Job already exists");
+    
+                return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
+            }
+        }
+        repository.saveAll(jobs);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("message", "Jobs posted successfully");
+        map.put("jobs", jobs);
+
+        return new ResponseEntity<Object>(map, HttpStatus.CREATED);
     }
 }
