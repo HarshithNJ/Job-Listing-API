@@ -91,7 +91,7 @@ public class jobService {
 
         if(jobs.isEmpty()) {
             Map<String, Object> map = new HashMap<String,Object>();
-            map.put("error", "No jobs found");
+            map.put("error", "No jobs found with title : " +title);
 
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }else {
@@ -108,7 +108,24 @@ public class jobService {
 
         if(jobs.isEmpty()) {
             Map<String, Object> map = new HashMap<String,Object>();
-            map.put("error", "No jobs found");
+            map.put("error", "No jobs found in the company : " +companyName);
+
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        } else {
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("success", "Jobs found");
+            map.put("jobs", jobs);
+
+            return new ResponseEntity<Object>(map, HttpStatus.FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> getJobByLocation(String location) {
+        List<job> jobs = repository.findByLocation(location);
+
+        if(jobs.isEmpty()) {
+            Map<String, Object> map = new HashMap<String,Object>();
+            map.put("error", "No jobs found in the location : " +location);
 
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         } else {
