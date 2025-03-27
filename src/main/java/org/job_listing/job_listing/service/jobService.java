@@ -3,6 +3,7 @@ package org.job_listing.job_listing.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.job_listing.job_listing.dto.job;
 import org.job_listing.job_listing.repository.jobRepository;
@@ -134,6 +135,44 @@ public class jobService {
             map.put("jobs", jobs);
 
             return new ResponseEntity<Object>(map, HttpStatus.FOUND);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public ResponseEntity<Object> deleteJob(long id) {
+        Optional<job> job = repository.findById(id);
+
+        if(job.isPresent()) {
+            repository.deleteById(id);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("success", "Job Deleted successfully");
+            map.put("job", job);
+
+            return new ResponseEntity<Object>(map, HttpStatus.OK);
+        } else {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("error", "No job found with id : " + id);
+
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }
     }
 }

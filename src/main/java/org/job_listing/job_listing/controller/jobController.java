@@ -6,6 +6,7 @@ import org.job_listing.job_listing.dto.job;
 import org.job_listing.job_listing.service.jobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,5 +57,20 @@ public class jobController {
     @GetMapping("/jobs/{location}/location")
     public ResponseEntity<Object> getJobByLocation(@PathVariable String location) {
         return service.getJobByLocation(location);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @DeleteMapping("/jobs/{id}")
+    public ResponseEntity<Object> deleteJob(@PathVariable long id) {
+        return service.deleteJob(id);
     }
 }
