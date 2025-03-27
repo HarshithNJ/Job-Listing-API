@@ -52,6 +52,23 @@ public class jobService {
         return new ResponseEntity<Object>(map, HttpStatus.CREATED);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public ResponseEntity<Object> getJobs() {
         List<job> jobs = repository.findAll();
 
@@ -78,6 +95,23 @@ public class jobService {
 
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }else {
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("success", "Jobs found");
+            map.put("jobs", jobs);
+
+            return new ResponseEntity<Object>(map, HttpStatus.FOUND);
+        }
+    }
+
+    public ResponseEntity<Object> getJobByCompanyName(String companyName) {
+        List<job> jobs = repository.findByCompanyName(companyName);
+
+        if(jobs.isEmpty()) {
+            Map<String, Object> map = new HashMap<String,Object>();
+            map.put("error", "No jobs found");
+
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        } else {
             Map<String,Object> map = new HashMap<String, Object>();
             map.put("success", "Jobs found");
             map.put("jobs", jobs);

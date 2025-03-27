@@ -47,4 +47,9 @@ public class jobController {
     public ResponseEntity<Object> getJobByTitle(@PathVariable String title) {
         return service.getJobByTitle(title);
     }
+
+    @GetMapping("/jobs/company/{companyName}")
+    public ResponseEntity<Object> getJobByCompanyName(@PathVariable String companyName) {
+        return service.getJobByCompanyName(companyName);
+    }
 }
