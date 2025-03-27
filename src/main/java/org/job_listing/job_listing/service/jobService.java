@@ -19,9 +19,9 @@ public class jobService {
     jobRepository repository;
 
     public ResponseEntity<Object> postJob(job job) {
-        if(repository.existsById(job.getId())){
+        if(repository.existsByJobId(job.getJobId())){
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("message", "Job already exists");
+            map.put("message", "Job already exists with the id " + job.getJobId());
 
             return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
         }else{
@@ -37,9 +37,9 @@ public class jobService {
 
     public ResponseEntity<Object> postJobs(List<job> jobs) {
         for(job job : jobs){
-            if(repository.existsById(job.getId())){
+            if(repository.existsByJobId(job.getJobId())){
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("message", "Job already exists");
+                map.put("message", "Job already exists with the id " + job.getJobId());
     
                 return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
             }
@@ -175,4 +175,53 @@ public class jobService {
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public ResponseEntity<Object> updateJob(String jobId, job job) {
+        Optional<job> job1 = repository.findByJobId(jobId);
+
+        if(job1.isPresent()) {
+            job j = job1.get();
+
+            if(job.getTitle() != null)
+                j.setTitle(job.getTitle());
+
+            if(job.getDescription() != null)
+                j.setDescription(job.getDescription());
+
+            if(job.getCompanyName() != null)
+                j.setCompanyName(job.getCompanyName());
+
+            if(job.getLocation() != null)
+                j.setLocation(job.getLocation());
+
+            repository.save(j);
+
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("success", "Job updated successfully");
+            map.put("job", j);
+
+            return new ResponseEntity<Object>(map, HttpStatus.OK);
+        } else {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("error", "No job found with id : " + jobId);
+
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        }
+    }  
 }
