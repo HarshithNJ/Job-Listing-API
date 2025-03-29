@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 public class jobController {
     
@@ -23,11 +26,17 @@ public class jobController {
 
     //To Post the Job Listing
     @PostMapping("/jobs")
+    @Operation(summary = "Post the Job Listing", description = "Post the Job Listing")
+    @ApiResponse(responseCode = "201", description = "Job posting Successfull")
+    @ApiResponse(responseCode = "400", description = "Job Already Exists")
     public ResponseEntity<Object> postJob(@RequestBody job job) {
         return service.postJob(job);
     }
 
     @PostMapping("/jobs/multiple")
+    @Operation(summary = "Post Multiple Job Listings", description = "Post Multiple Job Listings")
+    @ApiResponse(responseCode = "201", description = "Multiple Jobs Posting Successfull")
+    @ApiResponse(responseCode = "400", description = "One or More Jobs Already Exists")
     public ResponseEntity<Object> postJobs(@RequestBody List<job> jobs) {
         return service.postJobs(jobs);
     }
@@ -39,23 +48,35 @@ public class jobController {
 
 
 
-
+    //To fetch the jobs from database
     @GetMapping("/jobs")
+    @Operation(summary = "Get all jobs from database", description = "Get all jobs from database")
+    @ApiResponse(responseCode = "302", description = "Job Fetched successfully")
+    @ApiResponse(responseCode = "404", description = "Database is Empty")
     public ResponseEntity<Object> getJobs() {
         return service.getJobs();
     }
 
     @GetMapping("/jobs/{title}")
+    @Operation(summary = "Get Jobs by Title", description = "Get Jobs by Title")
+    @ApiResponse(responseCode = "302", description = "Job Fetched successfully")
+    @ApiResponse(responseCode = "404", description = "No Job found with given Title")
     public ResponseEntity<Object> getJobByTitle(@PathVariable String title) {
         return service.getJobByTitle(title);
     }
 
     @GetMapping("/jobs/company/{companyName}")
+    @Operation(summary = "Get the list of jobs for a company", description = "Get the list of jobs for a company")
+    @ApiResponse(responseCode = "302", description = "List of jobs for a company successfully fetched")
+    @ApiResponse(responseCode = "404", description = "No Jobs found in the company")
     public ResponseEntity<Object> getJobByCompanyName(@PathVariable String companyName) {
         return service.getJobByCompanyName(companyName);
     }
 
     @GetMapping("/jobs/{location}/location")
+    @Operation(summary = "Get the list of jobs for a location", description = "Get the list of jobs for a location")
+    @ApiResponse(responseCode = "302", description = "List of jobs for a location successfully fetched")
+    @ApiResponse(responseCode = "404", description = "No Jobs found in the location")
     public ResponseEntity<Object> getJobByLocation(@PathVariable String location) {
         return service.getJobByLocation(location);
     }
@@ -71,6 +92,9 @@ public class jobController {
 
 
     @DeleteMapping("/jobs/{id}")
+    @Operation(summary = "Delete a job by ID", description = "Delete a job by ID")
+    @ApiResponse(responseCode = "200", description = "Job deleted successfully")
+    @ApiResponse(responseCode = "404", description = "No Job found with given ID")
     public ResponseEntity<Object> deleteJob(@PathVariable long id) {
         return service.deleteJob(id);
     }
@@ -83,6 +107,9 @@ public class jobController {
 
 
     @PatchMapping("/jobs/{jobId}")
+    @Operation(summary = "Update a job by ID", description = "Update a job by ID")
+    @ApiResponse(responseCode = "200", description = "Job updated successfully")
+    @ApiResponse(responseCode = "404", description = "No Job found with given ID")
     public ResponseEntity<Object> updateJob(@PathVariable String jobId, @RequestBody job job) {
         return service.updateJob(jobId, job);
     }
